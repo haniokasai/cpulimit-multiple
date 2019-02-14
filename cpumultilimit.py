@@ -1,5 +1,6 @@
 # coding: UTF-8
 import subprocess
+import threading
 from subprocess import check_output
 
 #######config###########
@@ -11,7 +12,7 @@ limitprocessname ="bedrock_server"
 
 ########functions#######
 
-def cd_exec(self,pid):
+def cd_exec(pid):
  lp = None
  try:
   lp = subprocess.Popen([ "cpulimit", "-l", limitpercent, "-p",pid ], shell=False)
@@ -29,12 +30,24 @@ def scraiping_pid(processname):
  except Exception:
   print("scraiping_pidException")
 
+def checkschedule(pid):
+
+
 ########################
 
 
 ########Main Thread#####
 
-scraiping_pid("bedrock_server")
+pidsmap = scraiping_pid(limitprocessname)
+for p in pidsmap:
+ thread_1 = threading.Thread(target=cd_exec(p))
+
+while True:
+ newpid = scraiping_pid(limitprocessname)
+ #差分で回す　newpid,pidsmap
+ thread_1 = threading.Thread(target=cd_exec(p))
+ pidsmap = newpid
+ 
 
 ########################
 
