@@ -2,6 +2,7 @@
 import subprocess
 import threading
 import time
+import traceback
 
 from subprocess import check_output
 
@@ -17,10 +18,11 @@ limitprocessname ="bedrock_server"
 
 def cd_exec(pid):
  lp = None
+ print(pid);
  try:
-  lp = subprocess.Popen([ "cpulimit", "-l", limitpercent, "-p",pid ], shell=False)
-  lp.wait()
+  lp = subprocess.Popen([ "cpulimit", "-l", str(limitpercent), "-p", str(pid)], shell=False)
  except Exception:
+  traceback.print_exc()
   print("limitprocessprocessException")
 
 #https://stackoverflow.com/questions/26688936/how-to-get-pid-by-process-name
@@ -31,6 +33,7 @@ def scraiping_pid(processname):
   print(maped)
   return maped
  except Exception:
+  traceback.print_exc()
   print("scraiping_pidException")
 
 ########################
