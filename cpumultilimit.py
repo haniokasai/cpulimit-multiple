@@ -29,7 +29,7 @@ def cd_exec(pid):
 
 def scraiping_pid(processname):
  try:
-  maped = map(int, check_output(["pidof", processname]).split())
+  maped = set([i.decode("utf-8") for i in check_output(["pidof", processname]).split()])
   print(maped)
   return maped
  except Exception:
@@ -48,17 +48,21 @@ for p in pidsmap:
 
 while True:
  newpid = scraiping_pid(limitprocessname)
- print("pidsmap:" + str(newpid))
+
+ print("/////////")
+ print("newpid:" + str(newpid))
+ print("pidsmap:" + str(pidsmap))
  #差分で回す　newpid,pidsmap
  #https://xwave.exblog.jp/11309038/
- set_ab = set(newpid) - set(pidsmap)
- list_ab = list(set_ab)
+ list_ab = newpid.difference(pidsmap)
  print("list_ab:" + str(list_ab))
+ print("*********")
+
  for l in list_ab:
   thread_2 = threading.Thread(target=cd_exec(l))
 
  pidsmap = newpid
- time.sleep(60)
+ time.sleep(10)
 
 
 ########################
